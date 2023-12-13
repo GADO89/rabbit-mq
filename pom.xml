@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.spring</groupId>
-    <artifactId>rabbit-m</artifactId>
+    <artifactId>rabbit-mq</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>rabbit-m</name>
     <description>rabbit-m</description>
