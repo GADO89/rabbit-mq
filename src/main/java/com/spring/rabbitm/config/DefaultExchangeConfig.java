@@ -23,6 +23,7 @@ public class DefaultExchangeConfig {
     @Autowired
     private AmqpAdmin amqpAdmin;
 
+
     @Bean
     Queue createQueue(){
         return new Queue(defaultQueue,true,false,false);
@@ -43,6 +44,6 @@ public class DefaultExchangeConfig {
     @PostConstruct
     public void init(){
         amqpAdmin.declareQueue(createQueue());
-        //amqpAdmin.declareQueue(createQueue1());
+        amqpAdmin.declareQueue(createQueue1());
     }
 }
