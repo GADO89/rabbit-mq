@@ -1,6 +1,6 @@
 package com.spring.rabbitm.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.springframework.amqp.rabbit.connection.AbstractConnectionFactory;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -10,9 +10,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Configuration
-public class rabbitMQConfig {
+public class RabbitMqConfig {
 
     @Value("${spring.rabbitmq.host}")
     private String host;
@@ -25,20 +26,20 @@ public class rabbitMQConfig {
     @Value("${spring.rabbitmq.password}")
     private String password;
 
-   @Bean
+    @Bean
     public ConnectionFactory connectionFactory(){
-        AbstractConnectionFactory factory=new CachingConnectionFactory();
+        AbstractConnectionFactory factory = new CachingConnectionFactory();
         factory.setHost(host);
         factory.setPort(port);
         factory.setVirtualHost(virtualHost);
         factory.setUsername(username);
-        factory.setUsername(password);
-
+        factory.setPassword(password);
         return factory;
     }
-     @Bean
+
+    @Bean
     public MessageConverter messageConverter(){
-        ObjectMapper objectMapper=new ObjectMapper().findAndRegisterModules();
+        ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
         return new Jackson2JsonMessageConverter(objectMapper);
     }
 }
