@@ -46,6 +46,19 @@ public class FanOutExchangeConfig {
     FanoutExchange createFanoutExchange(){
         return new FanoutExchange(exchange,true,false);
     }
+
+    @Bean
+    Binding createFanoutBinding1(){
+        return BindingBuilder.bind(createFanoutQueue1()).to(createFanoutExchange());
+    }
+    @Bean
+    Binding createFanoutBinding2(){
+        return BindingBuilder.bind(createFanoutQueue2()).to(createFanoutExchange());
+    }
+    @Bean
+    Binding createFanoutBinding3(){
+        return BindingBuilder.bind(createFanoutQueue3()).to(createFanoutExchange());
+    }
     @Bean
     public AmqpTemplate fanoutQueue(ConnectionFactory connectionFactory, MessageConverter messageConverter){
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
@@ -60,6 +73,11 @@ public class FanOutExchangeConfig {
         amqpAdmin.declareQueue(createFanoutQueue3());
 
         amqpAdmin.declareExchange(createFanoutExchange());
+
+        amqpAdmin.declareBinding(createFanoutBinding1());
+        amqpAdmin.declareBinding(createFanoutBinding2());
+        amqpAdmin.declareBinding(createFanoutBinding3());
+
 
     }
 
