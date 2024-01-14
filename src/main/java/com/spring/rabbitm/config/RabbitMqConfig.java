@@ -1,6 +1,7 @@
 package com.spring.rabbitm.config;
 
 
+import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.AbstractConnectionFactory;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -35,6 +36,18 @@ public class RabbitMqConfig {
         factory.setUsername(username);
         factory.setPassword(password);
         return factory;
+    }
+    @Bean
+    public SimpleRabbitListenerContainerFactory simpleRabbitListenerContainerFactory(){
+        SimpleRabbitListenerContainerFactory  containerFactory=new SimpleRabbitListenerContainerFactory();
+        containerFactory.setConnectionFactory(connectionFactory());
+        containerFactory.setMessageConverter(messageConverter());
+        containerFactory.setMaxConcurrentConsumers(20);
+        containerFactory.setConcurrentConsumers(10);
+        containerFactory.setPrefetchCount(5);
+        containerFactory.setAutoStartup(true);
+
+        return containerFactory;
     }
 
     @Bean
