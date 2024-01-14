@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 
 @Configuration
 public class FanOutExchangeConfig {
@@ -41,24 +40,18 @@ public class FanOutExchangeConfig {
     Queue createFanoutQueue3(){
         return new Queue(fanout1Queue3,true,false,false);
     }
-
-    @Bean
-    FanoutExchange createFanoutExchange(){
-        return new FanoutExchange(exchange,true,false);
-    }
-
     @Bean
     Binding createFanoutBinding1(){
-        return BindingBuilder.bind(createFanoutQueue1()).to(createFanoutExchange());
-    }
+        return BindingBuilder.bind(createFanoutQueue1()).to(createFanoutExchange());}
     @Bean
     Binding createFanoutBinding2(){
-        return BindingBuilder.bind(createFanoutQueue2()).to(createFanoutExchange());
-    }
+        return BindingBuilder.bind(createFanoutQueue2()).to(createFanoutExchange());}
     @Bean
     Binding createFanoutBinding3(){
         return BindingBuilder.bind(createFanoutQueue3()).to(createFanoutExchange());
     }
+    @Bean
+    FanoutExchange createFanoutExchange(){return new FanoutExchange(exchange,true,false);}
     @Bean
     public AmqpTemplate fanoutQueue(ConnectionFactory connectionFactory, MessageConverter messageConverter){
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);

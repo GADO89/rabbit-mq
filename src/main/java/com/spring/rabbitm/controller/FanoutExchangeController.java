@@ -21,11 +21,9 @@ public class FanoutExchangeController {
 
     @GetMapping("/message")
     public String sendMessage() throws Exception {
-
-
         Message message=new Message("direct", LocalDateTime.now());
-
         fanoutQueue.convertAndSend(message);
+
         return "Success Fanout";
     }
 
