@@ -46,6 +46,7 @@ public class RabbitMqConfig {
         containerFactory.setConcurrentConsumers(10);
         containerFactory.setPrefetchCount(5);
         containerFactory.setAutoStartup(true);
+        containerFactory.setDefaultRequeueRejected(false);
 
         return containerFactory;
     }
