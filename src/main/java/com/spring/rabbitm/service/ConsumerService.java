@@ -23,7 +23,7 @@ public class ConsumerService {
         Properties property=amqpAdmin.getQueueProperties(queueName);
         return (int) property.get(RabbitAdmin.QUEUE_MESSAGE_COUNT);
     }
-    private List<Message> receiveMessages(String queueName){
+    public List<Message> receiveMessages(String queueName){
      int count=getCountMessage(queueName);
      return IntStream.range(0,count)
              .mapToObj(value ->(Message) rabbitTemplate.receiveAndConvert(queueName))
