@@ -1,6 +1,6 @@
 package com.spring.rabbitm.controller;
 
-import com.spring.rabbitm.model.Message;
+import com.spring.rabbitm.model.MessageDto;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +18,7 @@ public class DefaultExchangeController {
 
     @GetMapping("/message")
     public void sendMessage(){
-    Message message=new Message("default", LocalDateTime.now());
+    MessageDto message=new MessageDto("default", LocalDateTime.now());
         defaultQueue.convertAndSend(message);
 }
 }

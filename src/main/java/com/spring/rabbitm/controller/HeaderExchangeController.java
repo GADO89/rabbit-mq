@@ -1,6 +1,6 @@
 package com.spring.rabbitm.controller;
 
-import com.spring.rabbitm.model.Message;
+import com.spring.rabbitm.model.MessageDto;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.MessageBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class HeaderExchangeController {
             @RequestParam(value = "warning",required = false)String warning,
             @RequestParam(value = "debug",required = false)String debug
     ) {
-        Message message=new Message("Header", LocalDateTime.now());
+        MessageDto message=new MessageDto("Header", LocalDateTime.now());
         MessageBuilder messageBuilder=MessageBuilder.withBody(message.toString().getBytes());
         if (error !=null){
             messageBuilder.setHeader("error", error);

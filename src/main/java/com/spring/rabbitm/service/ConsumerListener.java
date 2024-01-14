@@ -1,26 +1,40 @@
 package com.spring.rabbitm.service;
 
-import com.spring.rabbitm.model.Message;
-import org.springframework.amqp.core.AmqpAdmin;
+import com.spring.rabbitm.model.MessageDto;
+import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.amqp.rabbit.core.RabbitAdmin;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Properties;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Component
 public class ConsumerListener {
 
+    private static final String HEADER_X_RETRY="x-retry";
+    private static final int MAX_RETRY=3;
+
+    @Autowired
+    private AmqpTemplate directQueue;
     @RabbitListener(queues = {"${rabbit.direct1.queue}","${rabbit.direct3.queue}"},
             containerFactory = "simpleRabbitListenerContainerFactory")
-    public void receiveMessages(Message message){
-        System.out.println(message.getStatus()+"  "+message.getLocalDateTime());
-        throw new RuntimeException();
+    public void receiveMessages(@Payload MessageDto messageDto, Message message){
+        try {
+            System.out.println(messageDto.getStatus()+"  "+messageDto.getLocalDateTime());
+            throw new RuntimeException();
+
+        }catch (Exception e){
+       Integer count= (Integer) message.getMessageProperties().getHeaders().get(HEADER_X_RETRY);
+       if (count==null){
+           count=0;
+       } else if (count>= MAX_RETRY) {
+           System.out.println("----> message ignored");
+           return;
+       }
+            System.out.println("Retry...........");
+       message.getMessageProperties().getHeaders().put(HEADER_X_RETRY,++count);
+       directQueue.send(message.getMessageProperties().getReceivedRoutingKey(), message);
+        }
+
     }
 }

@@ -1,7 +1,6 @@
 package com.spring.rabbitm.controller;
 
-import com.spring.rabbitm.model.Message;
-import org.springframework.amqp.core.AmqpAdmin;
+import com.spring.rabbitm.model.MessageDto;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,7 +39,7 @@ public class DirectExchangeController {
         else {
             throw new Exception("You musst enter 1,2 or 3 only");
         }
-        Message message=new Message("direct", LocalDateTime.now());
+        MessageDto message=new MessageDto("direct", LocalDateTime.now());
 
         directQueue.convertAndSend(key, message);
         return "Success Direct";

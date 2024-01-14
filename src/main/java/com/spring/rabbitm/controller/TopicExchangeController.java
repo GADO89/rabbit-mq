@@ -1,6 +1,6 @@
 package com.spring.rabbitm.controller;
 
-import com.spring.rabbitm.model.Message;
+import com.spring.rabbitm.model.MessageDto;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,7 +30,7 @@ public class TopicExchangeController {
     @GetMapping("/message/{key}")
     public String sendMessage(@PathVariable String key) throws Exception {
 
-        Message message=new Message("Topic", LocalDateTime.now());
+        MessageDto message=new MessageDto("Topic", LocalDateTime.now());
 
         topicQueue.convertAndSend(key, message);
         return "Success Topic";
